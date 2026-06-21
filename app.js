@@ -1,3 +1,22 @@
+const http = require('http');
+const port = 2673;
+
+const server = http.createServer(function (rq,rs) {
+    rs.write('hello wide world');
+    rs.end();
+});
+
+server.listen(port, function (err) {
+    if (err) {
+        alert('something went wrong with the server. please try again later');
+        console.log(err);
+    } else {
+        console.log('server is listening. localhost:' + port)
+    }
+})
+
+///////////////////////
+
 const inputField = document.getElementById("msgInput");
 const sendButton = document.getElementById("send-button");
 const username = document.getElementById("nickInput");
