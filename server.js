@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
-const port = process.env.PORT || 2673;
+const port = process.env.PORT || 6767;
 
 const server = http.createServer((req, res) => {
     let filePath = '.' + req.url;
@@ -45,7 +45,7 @@ wss.on('connection', (ws) => {
             const payload = JSON.parse(message.toString());
             if (payload && payload.type === 'message') {
                 wss.clients.forEach((client) => {
-                    if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(payload));
                     }
                 });
