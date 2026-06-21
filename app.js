@@ -1,55 +1,80 @@
-const http = require('http');
-const port = 2673;
-
-const server = http.createServer(function (rq,rs) {
-    rs.write('hello wide world');
-    rs.end();
-});
-
-server.listen(port, function (err) {
-    if (err) {
-        alert('something went wrong with the server. please try again later');
-        console.log(err);
-    } else {
-        console.log('server is listening. localhost:' + port)
-    }
-})
-
-///////////////////////
-
 const inputField = document.getElementById("msgInput");
 const sendButton = document.getElementById("send-button");
 const username = document.getElementById("nickInput");
 const msgContainer = document.getElementById("messages");
 
-function doSubmitMsg(msg,name) {
-    const text = msg.trim();
-    if (!text) return;
+const socket = new WebSocket(
+    `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`
+);
 
-    const newMsg = document.createElement('div');
+function appendMessage(name, text) {
+    const textValue = text.trim();
+    if (!textValue) return;
+
+    const newMsg = document.createElement("div");
     newMsg.className = "message hbox";
-    newMsg.innerHTML = `
-        <img src="gfx/img/default.png"/>
-        <div class="vbox">
-            <p class="bold">${name}</p>
-            <p>${text}</p>
-        </div>
-    `;
 
+    const sender = document.createElement("p");
+    sender.className = "bold";
+    sender.textContent = name;
+
+    const body = document.createElement("p");
+    body.textContent = textValue;
+
+    const image = document.createElement("img");
+    image.src = "gfx/img/default.png";
+
+    const textBlock = document.createElement("div");
+    textBlock.className = "vbox";
+    textBlock.append(sender, body);
+
+    newMsg.append(image, textBlock);
     msgContainer.appendChild(newMsg);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
 }
 
 function submitCurrentMessage() {
-    const nm = username.value.trim()
+    const nm = username.value.trim();
+    const messageText = inputField.value.trim();
+
     if (!nm) {
         alert("u must have a valid username first");
-        return
+        return;
     }
-    doSubmitMsg(inputField.value,nm);
+
+    if (!messageText) {
+        return;
+    }
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            type: "message",
+            name: nm,
+            text: messageText
+        }));
+    } else {
+        appendMessage("server", "the chat server is not connected yet.");
+    }
+
     inputField.value = "";
 }
 
-inputField.addEventListener('keydown', function (e) {
+socket.addEventListener("message", (event) => {
+    try {
+        const payload = JSON.parse(event.data);
+        if (payload && payload.type === "message") {
+            appendMessage(payload.name, payload.text);
+        }
+    } catch (error) {
+        console.error("invalid message payload", error);
+    }
+});
+
+socket.addEventListener("error", () => {
+    appendMessage("server", "unable to connect to the chat server.");
+});
+
+inputField.addEventListener("keydown", function (e) {
     if (e.code === "Enter") {
         e.preventDefault();
         submitCurrentMessage();
@@ -57,5 +82,5 @@ inputField.addEventListener('keydown', function (e) {
 });
 
 if (sendButton) {
-    sendButton.addEventListener('click', submitCurrentMessage);
+    sendButton.addEventListener("click", submitCurrentMessage);
 }

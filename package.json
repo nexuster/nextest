@@ -1,7 +1,11 @@
 {
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "ws": "^8.18.0"
   }
 }
