@@ -83,6 +83,7 @@ div {
     padding: 6px;
     box-sizing: content-box;
     border: 2px solid var(--accent2-stroke);
+    margin: 12px 0px;
     p {
         /* background-color: var(--accent2-fill); */
         color: var(--text-color1);
@@ -102,6 +103,9 @@ div#chatInput {
     height: 48px;
 } div#chatInput button {
     background-color: #b2e14c;
+    border: none;
+    text-align: center;
+    size: 48px 48px;
 }
 
 div#messages {

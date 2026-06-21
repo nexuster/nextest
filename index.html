@@ -4,29 +4,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="style.css">
         <title>Chat</title>
     </head>
     <body>
         <div class="hbox">
-            <div class="vbox" id="chats">Stuff here</div>
+            <!-- <div class="vbox" id="chats">Stuff here</div> -->
             <div id="chatContainer" class="vbox">
-                <div id="name"><h2>[NAME]</h2></div>
+                <div id="name"><h2>global chat</h2></div>
                 <div id="messages">
                     <div class="message hbox">
                         <img src="gfx/img/default.png"/>
                         <div class="vbox">
-                            <p class="bold">[name]</p>
-                            <p>welcome to the chat !!</p>
+                            <p class="bold">server</p>
+                            <p>welcome to the chat !! chat switching is disabled for now.</p>
                         </div>
                     </div>
                 </div>
                 <div id="chatInput" class="hbox">
-                    <input type="text" placeholder="enter a message"/>
+                    <input id="msgInput" type="text" placeholder="enter a message"/>
                     <button id="send-button">
                         <i class="bi bi-send" style="font-size: 2rem; color: #ffffff;"></i>
                     </button>
                 </div>
+                <br>
+                <input id="nickInput" type="text" placeholder="nickname"/>
             </div>
         </div>
         <script src="app.js"></script>
